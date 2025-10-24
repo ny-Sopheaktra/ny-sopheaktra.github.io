@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graphic Design Highlight Works</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* --- General Styling and Body --- */
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 40px;
+        background-color: #222222; /* Light Black / Dark Gray */
+        color: #f0f0f0;
+      }
+
+      h1 {
+        text-align: center;
+        color: #d4d0d4;
+        margin-bottom: 50px;
+        font-weight: 700;
+      }
+
+      /* --- Flexbox Container for Image Gallery --- */
+      .video-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 30px;
+        background-color: #111111; /* Black Background */
+        border-radius: 15px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+        max-width: 1300px;
+        margin: 0 auto;
+      }
+
+      /* --- Individual Image Item (Flex Item - Default: Desktop) --- */
+      .video-item {
+        flex: 1 1 350px;
+        max-width: 400px;
+        cursor: pointer;
+        overflow: hidden;
+        border-radius: 10px;
+        background-color: #000000;
+        position: relative;
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s ease-in-out;
+      }
+
+      /* --- Hover Glow Effect ("Light Run") --- */
+      .video-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 3px #df42ca, 0 0 5px #e445f0,
+          0 0 7px rgba(244, 106, 249, 0.8);
+      }
+
+      /* --- Square Aspect Ratio Container (Padding Hack) --- */
+      .video-thumbnail-wrapper {
+        position: relative;
+        width: 100%;
+        padding-top: 100%; /* Creates a 1:1 aspect ratio (Square) */
+        overflow: hidden;
+        background-color: #000;
+      }
+
+      /* Image element styling (for thumbnails) */
+      .video-thumbnail-wrapper img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures image fills the square area */
+        /* REMOVED: filter: brightness(0.7); to remove the blur/dim effect */
+        transition: filter 0.3s;
+      }
+
+      .video-item:hover .video-thumbnail-wrapper img {
+        /* No brightness change on hover since it's already full brightness */
+        filter: brightness(1);
+      }
+
+      /* Play icon styling (HIDDEN FOR IMAGE GALLERY) */
+      .play-icon {
+        display: none; /* Hide the play icon */
+      }
+
+      /* REMOVED .video-item-title STYLES */
+
+      /* --- MODAL/POPUP STYLES (Adjusted for Image Centering) --- */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.95);
+        overflow: auto;
+      }
+
+      /* KEY FIX: Centering the modal content using Flexbox */
+      .modal-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Ensures content wrapper uses full viewport height */
+        width: 90%;
+        max-width: 1000px;
+        margin: auto;
+        position: relative;
+      }
+
+      /* Container for the full-size image */
+
+      /* New style for the full size image inside the modal */
+      .modal-video-wrapper img {
+        max-width: 100%;
+        max-height: 90vh; /* Limits height to fit the screen vertically */
+        object-fit: contain;
+      }
+
+      .close {
+        position: fixed;
+        top: 10px;
+        right: 25px;
+        color: #c615b7;
+        font-size: 50px;
+        font-weight: 300;
+        transition: 0.3s;
+        z-index: 1001;
+        cursor: pointer;
+        line-height: 1;
+        text-shadow: 0 0 10px #b268b0;
+      }
+
+      .close:hover {
+        color: #fff;
+      }
+
+      /* =================================================== */
+      /* --- RESPONSIVENESS (Media Queries) --- */
+      /* =================================================== */
+
+      /* Tablets (Screen width up to 900px) - Two columns */
+      @media (max-width: 900px) {
+        body {
+          padding: 20px;
+        }
+
+        .video-gallery {
+          padding: 15px;
+          gap: 15px;
+        }
+
+        .video-item {
+          flex-basis: calc(50% - 7.5px);
+          max-width: none;
+        }
+      }
+
+      /* Small Mobile Devices (Screen width up to 550px) - Single column */
+      @media (max-width: 550px) {
+        .video-item {
+          flex-basis: 100%;
+          max-width: none;
+        }
+
+        /* REMOVED .video-item-title mobile styles */
+
+        /* Mobile Modal Adjustment */
+        .modal-content {
+          width: 95vw;
+        }
+
+        .close {
+          top: 5px;
+          right: 15px;
+          font-size: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Graphic Design Highlight Works</h1>
+
+    <div class="video-gallery">
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/15MDeiqpKyHzWCwuXG6jxHDp4UGuUla7C/view?usp=sharing"
+        data-title="IMAGE 1"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/17ZL2d2lqIkxCFxrLh_rUKl4qj_0fzSgY/view?usp=sharing"
+        data-title="IMAGE 2"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1B2ugRdsJ3vvrCLumLDjoLEAVECm7hZxh/view?usp=sharing"
+        data-title="IMAGE 3"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1FEXU5TPHneGS3mHPWcXyoJjSZxuUpPGG/view?usp=sharing"
+        data-title="IMAGE 4"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1qaZzm9x34Edex2ypqTpz2uwYA3BEYH0S/view?usp=sharing"
+        data-title="IMAGE 5"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/13Au1-C8bx9YBFEgRofPygKguQWUPyjok/view?usp=sharing"
+        data-title="IMAGE 6"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/14AnIjXeTIy21Z309TFCRqWdLl_w8CTS-/view?usp=sharing"
+        data-title="IMAGE 7"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1Q2Lkzwo336Jhzvkr134FwLNt8yJgc0Lq/view?usp=sharing"
+        data-title="IMAGE 8"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1TlqPcYRb-5Ls3HN_OH6ch_iYADXd-N-k/view?usp=sharing"
+        data-title="IMAGE 9"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1cCKzO8brh3e5h-_xiKQ5q0_7TzQ8WEmo/view?usp=sharing"
+        data-title="IMAGE 10"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1jI-8U6bZWPodMfjKybO8B_gLt6Ow9X6P/view?usp=sharing"
+        data-title="IMAGE 11"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1oP1C-81LRWNfScjHkNy7jGEE_cFWGL7r/view?usp=sharing"
+        data-title="IMAGE 12"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1pfCCWymJw_QlKoUP7548T77EjX1ynrn3/view?usp=sharing"
+        data-title="IMAGE 13"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1wG6SWrvRPBbe8bSUsxuyDy0uExSDUuOP/view?usp=sharing"
+        data-title="IMAGE 14"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1xLv4W5Mv8AD-aQRhPVazP7caa3bAz1dr/view?usp=sharing"
+        data-title="IMAGE 15"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1b9kwsUnsmkilFyttucOT_CxzoBNayybM/view?usp=sharing"
+        data-title="IMAGE 16"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1vqWVa2f7sX6T-ZqTiZjyvzjOZLInRtwg/view?usp=sharing"
+        data-title="IMAGE 17"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1zG-s7ocSWgKmY0Sk8XT1eBbADQ1nNV42/view?usp=sharing"
+        data-title="IMAGE 18"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/10a2Ko2n14gQSbKQNy3P7qQAzeSaU0qti/view?usp=sharing"
+        data-title="IMAGE 19"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/13wrlhy8MU4p6_i6dW12gQmW_oCFUBpdY/view?usp=sharing"
+        data-title="IMAGE 20"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1FQ1ZYmaoN6r2vZhivex3txXwyO93o3Gg/view?usp=sharing"
+        data-title="IMAGE 21"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1L64uUyBkrc2juAsNygm2XcfJrfmRoDTt/view?usp=sharing"
+        data-title="IMAGE 22"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1MAXyelwJdpZq9zIMGe7AoEHjv7JMnxBT/view?usp=sharing"
+        data-title="IMAGE 23"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1QE8PCD1W6AQyfIYu2wqfA7HuzYyP3pS-/view?usp=sharing"
+        data-title="IMAGE 24"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1b_kd01d0oOiaFfkzC2V1tKJRVMmg6RGa/view?usp=sharing"
+        data-title="IMAGE 25"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/14C7adQOcwhBihSugeV1DeqzIp4Tp4tJ1/view?usp=sharing"
+        data-title="IMAGE 26"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1JOBeVq3HrZYtQdXRYBwb4ruxJsdOtgaE/view?usp=sharing"
+        data-title="IMAGE 27"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1O9VjFOnZiLN0PMsDuaHnLlrs55gO6bDR/view?usp=sharing"
+        data-title="IMAGE 28"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1iQ0-tpA6RY9tFhvt3hD_U5lQPjhzn48R/view?usp=sharing"
+        data-title="IMAGE 29"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1mYaT3e8EjV-MGWSTxPi2fUCjyVTL2FJ_/view?usp=sharing"
+        data-title="IMAGE 30"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1sm3zvkDWSX5u2nEqk4wIrAWMpLbIQ_Bu/view?usp=sharing"
+        data-title="IMAGE 31"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1w51wUsM093t8xzZZN3Jz8WD5kO4Hj6qm/view?usp=sharing"
+        data-title="IMAGE 32"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1mJgfJSX3dW_KbV7NuMsqnnwUGQGTK2Zc/view?usp=sharing"
+        data-title="IMAGE 33"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1mTYiwnJ7TV0DW1dJdHrCQVx3h9cO2yCP/view?usp=sharing"
+        data-title="IMAGE 34"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/18MPOAvOe1ysAii-TIWT6h94iaPsAX5Pk/view?usp=sharing"
+        data-title="IMAGE 35"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-full-url="https://drive.google.com/file/d/1HOunBNgR7oNUkfiwK1s6vdyfjijdGrNE/view?usp=sharing"
+        data-title="IMAGE 36"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="myModal" class="modal">
+      <span class="close">&times;</span>
+      <div class="modal-content">
+        <div class="modal-video-wrapper"></div>
+      </div>
+    </div>
+
+    <script>
+      /**
+       * Extracts the Google Drive File ID from a sharing link.
+       * @param {string} url The Google Drive share URL.
+       * @returns {string|null} The file ID or null if not found.
+       */
+      function extractDriveFileId(url) {
+        // Regex for 'file/d/FILE_ID/view' format
+        const match = url.match(/\/d\/([^\/]+)\/view/);
+        if (match && match[1]) {
+          return match[1];
+        }
+        // Fallback for other potential formats, though usually view links are standard
+        return null;
+      }
+
+      /**
+       * Generates a Google Drive thumbnail URL.
+       * @param {string} fileId The Google Drive file ID.
+       * @param {number} size The desired width/size for the thumbnail.
+       * @returns {string} The thumbnail URL.
+       */
+      function getThumbnailUrl(fileId, size = 500) {
+        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w${size}`;
+      }
+
+      /**
+       * Generates a Google Drive direct image URL for the full view.
+       * Using a large size for the modal image.
+       * @param {string} fileId The Google Drive file ID.
+       * @param {number} size The desired width/size for the full image.
+       * @returns {string} The full-size image URL.
+       */
+      function getFullImageUrl(fileId, size = 2048) {
+        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w${size}`;
+      }
+
+      const videoItems = document.querySelectorAll(".video-item");
+      const modal = document.getElementById("myModal");
+      const closeBtn = document.querySelector(".close");
+      const modalVideoWrapper = document.querySelector(".modal-video-wrapper");
+
+      // Function to handle closing the modal (used by overlay and close button)
+      function closeModal() {
+        modal.style.display = "none";
+        // Clear the image content when closing
+        modalVideoWrapper.innerHTML = "";
+      }
+
+      // Initialize all image items
+      videoItems.forEach((item) => {
+        const imageElement = item.querySelector("img");
+        const fullShareUrl = item.getAttribute("data-full-url"); // Use full-url attribute for the original shared link
+        const fileId = extractDriveFileId(fullShareUrl);
+
+        if (fileId) {
+          // 1. Set Thumbnail Source
+          const thumbnailUrl = getThumbnailUrl(fileId, 500); // 500px wide thumbnail
+          if (imageElement) {
+            imageElement.src = thumbnailUrl;
+          }
+
+          // 2. Handle Click to Open FULL IMAGE Modal
+          item.addEventListener("click", function () {
+            const fullImageFileId = extractDriveFileId(
+              this.getAttribute("data-full-url")
+            );
+            if (fullImageFileId) {
+              const finalFullImageUrl = getFullImageUrl(fullImageFileId, 2048); // Large image for modal
+
+              const fullImageElement = document.createElement("img");
+              fullImageElement.setAttribute("src", finalFullImageUrl);
+              fullImageElement.setAttribute(
+                "alt",
+                this.getAttribute("data-title")
+              ); // Set alt text
+
+              // Clear previous content (important for sequential clicks)
+              modalVideoWrapper.innerHTML = "";
+              // Inject the new full-size image
+              modalVideoWrapper.appendChild(fullImageElement);
+              modal.style.display = "block";
+            }
+          });
+        }
+      });
+
+      // Close the modal when the "X" is clicked.
+      closeBtn.addEventListener("click", closeModal);
+
+      // Close the modal when the dark overlay (the modal itself) is clicked.
+      window.addEventListener("click", function (event) {
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+
+      // Close logic via ESC key
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && modal.style.display === "block") {
+          closeModal();
+        }
+      });
+    </script>
+  </body>
+</html>

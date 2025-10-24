@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asaina Airlines Design Works</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* --- General Styling and Body --- */
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 40px;
+        background-color: #222222; /* Light Black / Dark Gray */
+        color: #f0f0f0;
+      }
+
+      h1 {
+        text-align: center;
+        color: #d4d0d4;
+        margin-bottom: 50px;
+        font-weight: 700;
+      }
+
+      /* --- Flexbox Container for Image Gallery --- */
+      .video-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 30px;
+        background-color: #111111; /* Black Background */
+        border-radius: 15px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+        max-width: 1300px;
+        margin: 0 auto;
+      }
+
+      /* --- Individual Image Item (Flex Item - Default: Desktop) --- */
+      .video-item {
+        flex: 1 1 350px;
+        max-width: 400px;
+        cursor: pointer;
+        overflow: hidden;
+        border-radius: 10px;
+        background-color: #000000;
+        position: relative;
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s ease-in-out;
+      }
+
+      /* --- Hover Glow Effect ("Light Run") --- */
+      .video-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 3px #df42ca, 0 0 5px #e445f0,
+          0 0 7px rgba(244, 106, 249, 0.8);
+      }
+
+      /* --- Square Aspect Ratio Container (Padding Hack) --- */
+      .video-thumbnail-wrapper {
+        position: relative;
+        width: 100%;
+        padding-top: 100%; /* Creates a 1:1 aspect ratio (Square) */
+        overflow: hidden;
+        background-color: #000;
+      }
+
+      /* Image element styling (for thumbnails) */
+      .video-thumbnail-wrapper img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures image fills the square area */
+        /* REMOVED: filter: brightness(0.7); to remove the blur/dim effect */
+        transition: filter 0.3s;
+      }
+
+      .video-item:hover .video-thumbnail-wrapper img {
+        /* No brightness change on hover since it's already full brightness */
+        filter: brightness(1);
+      }
+
+      /* Play icon styling (HIDDEN FOR IMAGE GALLERY) */
+      .play-icon {
+        display: none; /* Hide the play icon */
+      }
+
+      .video-item-title {
+        text-align: center;
+        padding: 15px 10px;
+        background-color: #1a1a1a;
+        color: #d4d0d4;
+        font-size: 1.1em;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-top: 1px solid #333;
+      }
+
+      /* --- MODAL/POPUP STYLES (Adjusted for Image Centering) --- */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.95);
+        overflow: auto;
+      }
+
+      /* KEY FIX: Centering the modal content using Flexbox */
+      .modal-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Ensures content wrapper uses full viewport height */
+        width: 90%;
+        max-width: 1000px;
+        margin: auto;
+        position: relative;
+      }
+
+      /* Container for the full-size image */
+
+      /* New style for the full size image inside the modal */
+      .modal-video-wrapper img {
+        max-width: 100%;
+        max-height: 90vh; /* Limits height to fit the screen vertically */
+        object-fit: contain;
+      }
+
+      .close {
+        position: fixed;
+        top: 10px;
+        right: 25px;
+        color: #c615b7;
+        font-size: 50px;
+        font-weight: 300;
+        transition: 0.3s;
+        z-index: 1001;
+        cursor: pointer;
+        line-height: 1;
+        text-shadow: 0 0 10px #b268b0;
+      }
+
+      .close:hover {
+        color: #fff;
+      }
+
+      /* =================================================== */
+      /* --- RESPONSIVENESS (Media Queries) --- */
+      /* =================================================== */
+
+      /* Tablets (Screen width up to 900px) - Two columns */
+      @media (max-width: 900px) {
+        body {
+          padding: 20px;
+        }
+
+        .video-gallery {
+          padding: 15px;
+          gap: 15px;
+        }
+
+        .video-item {
+          flex-basis: calc(50% - 7.5px);
+          max-width: none;
+        }
+      }
+
+      /* Small Mobile Devices (Screen width up to 550px) - Single column */
+      @media (max-width: 550px) {
+        .video-item {
+          flex-basis: 100%;
+          max-width: none;
+        }
+
+        .video-item-title {
+          font-size: 1em;
+        }
+
+        /* Mobile Modal Adjustment */
+        .modal-content {
+          width: 95vw;
+        }
+
+        .close {
+          top: 5px;
+          right: 15px;
+          font-size: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Asaina Airlines Design Works</h1>
+
+    <div class="video-gallery">
+      <div
+        class="video-item"
+        data-thumbnail-url="https://drive.google.com/thumbnail?id=1BMKP1YSOdHu_T4yfaIVTZbdIfNMsnIB_&sz=w500"
+        data-full-url="https://drive.google.com/thumbnail?id=1BMKP1YSOdHu_T4yfaIVTZbdIfNMsnIB_&sz=w2048"
+        data-title="IMAGE ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-thumbnail-url="https://drive.google.com/thumbnail?id=1mpVjRn48decdpQ89xIGf0dobidD2IV_b&sz=w500"
+        data-full-url="https://drive.google.com/thumbnail?id=1mpVjRn48decdpQ89xIGf0dobidD2IV_b&sz=w2048"
+        data-title="IMAGE ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-thumbnail-url="https://drive.google.com/thumbnail?id=1tTcqR7Sm2ZKFCpjp7ymVurhMDnhBktI4&sz=w500"
+        data-full-url="https://drive.google.com/thumbnail?id=1tTcqR7Sm2ZKFCpjp7ymVurhMDnhBktI4&sz=w2048"
+        data-title="IMAGE ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-thumbnail-url="https://drive.google.com/thumbnail?id=1k1E2APatZLbSrr2QdOO8I3_rwuFcSime&sz=w500"
+        data-full-url="https://drive.google.com/thumbnail?id=1k1E2APatZLbSrr2QdOO8I3_rwuFcSime&sz=w2048"
+        data-title="IMAGE ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Image Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+      
+    </div>
+
+    <div id="myModal" class="modal">
+      <span class="close">&times;</span>
+      <div class="modal-content">
+        <div class="modal-video-wrapper"></div>
+      </div>
+    </div>
+
+    <script>
+      const videoItems = document.querySelectorAll(".video-item");
+      const modal = document.getElementById("myModal");
+      const closeBtn = document.querySelector(".close");
+      const modalVideoWrapper = document.querySelector(".modal-video-wrapper");
+
+      // Function to handle closing the modal (used by overlay and close button)
+      function closeModal() {
+        modal.style.display = "none";
+        // Clear the image content when closing
+        modalVideoWrapper.innerHTML = "";
+      }
+
+      // 1. Set Thumbnail Source
+      videoItems.forEach((item) => {
+        const imageElement = item.querySelector("img");
+        // Get the thumbnail URL (smaller size)
+        const thumbnailUrl = item.getAttribute("data-thumbnail-url");
+
+        if (imageElement && thumbnailUrl) {
+          imageElement.src = thumbnailUrl;
+        }
+
+        // 2. Handle Click to Open FULL IMAGE Modal
+        item.addEventListener("click", function () {
+          // Get the full-size image URL (larger size)
+          const fullImageUrl = this.getAttribute("data-full-url");
+
+          const fullImageElement = document.createElement("img");
+          fullImageElement.setAttribute("src", fullImageUrl);
+
+          // Clear previous content (important for sequential clicks)
+          modalVideoWrapper.innerHTML = "";
+          // Inject the new full-size image
+          modalVideoWrapper.appendChild(fullImageElement);
+          modal.style.display = "block";
+        });
+      });
+
+      // Close the modal when the "X" is clicked.
+      closeBtn.addEventListener("click", closeModal);
+
+      // Close the modal when the dark overlay (the modal itself) is clicked.
+      window.addEventListener("click", function (event) {
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+
+      // Close logic via ESC key
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && modal.style.display === "block") {
+          closeModal();
+        }
+      });
+    </script>
+  </body>
+</html>

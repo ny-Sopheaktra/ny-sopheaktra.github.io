@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>100 PLUS VIDEOS</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* --- General Styling and Body --- */
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 40px;
+        background-color: #222222; /* Light Black / Dark Gray */
+        color: #f0f0f0;
+      }
+
+      h1 {
+        text-align: center;
+        color: #d4d0d4;
+        margin-bottom: 50px;
+        font-weight: 700;
+      }
+
+      /* --- Flexbox Container for Video Gallery --- */
+      .video-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 30px;
+        background-color: #111111; /* Black Background */
+        border-radius: 15px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+        max-width: 1300px;
+        margin: 0 auto;
+      }
+
+      /* --- Individual Video Item (Flex Item - Default: Desktop) --- */
+      .video-item {
+        flex: 1 1 350px;
+        max-width: 400px;
+        cursor: pointer;
+        overflow: hidden;
+        border-radius: 10px;
+        background-color: #000000;
+        position: relative;
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s ease-in-out;
+      }
+
+      /* --- Hover Glow Effect ("Light Run") --- */
+      .video-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 3px #df42ca, 0 0 5px #e445f0,
+          0 0 7px rgba(244, 106, 249, 0.8);
+      }
+
+      /* --- Square Aspect Ratio Container (Padding Hack) --- */
+      .video-thumbnail-wrapper {
+        position: relative;
+        width: 100%;
+        padding-top: 100%; /* Creates a 1:1 aspect ratio (Square) */
+        overflow: hidden;
+        background-color: #000;
+      }
+
+      /* Image element styling */
+      .video-thumbnail-wrapper img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures image fills the square area */
+        filter: brightness(0.8);
+        transition: filter 0.3s;
+      }
+
+      .video-item:hover .video-thumbnail-wrapper img {
+        filter: brightness(0.9);
+      }
+
+      /* Play icon styling */
+      .play-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 4em;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 0 0 10px #000000;
+        pointer-events: none;
+        z-index: 10;
+      }
+
+      .video-item-title {
+        text-align: center;
+        padding: 15px 10px;
+        background-color: #1a1a1a;
+        color: #00e0ff;
+        font-size: 1.1em;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-top: 1px solid #333;
+      }
+
+      /* --- MODAL/POPUP STYLES --- */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.95);
+        /* padding-top: 60px; <-- REMOVED this static padding for better centering */
+        overflow: auto; /* Allow scrolling if content is too large */
+      }
+
+      /* KEY FIX: Centering the modal content using Flexbox */
+      .modal-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Ensures content wrapper uses full viewport height */
+        width: 90%;
+        max-width: 1000px;
+        margin: auto; /* Fallback for older browsers */
+        position: relative;
+      }
+
+      .modal-video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        width: 100%; /* Must be 100% of the modal-content width */
+        border-radius: 8px;
+        box-shadow: 0 0 30px rgba(14, 6, 14, 0.5);
+      }
+
+      .modal-video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .close {
+        position: fixed; /* Changed to fixed so it stays visible over modal */
+        top: 10px;
+        right: 25px;
+        color: #c615b7;
+        font-size: 50px;
+        font-weight: 300;
+        transition: 0.3s;
+        z-index: 1001;
+        cursor: pointer;
+        line-height: 1;
+        text-shadow: 0 0 10px #b268b0;
+      }
+
+      .close:hover {
+        color: #fff;
+      }
+
+      /* =================================================== */
+      /* --- RESPONSIVENESS (Media Queries) --- */
+      /* =================================================== */
+
+      /* Tablets (Screen width up to 900px) - Two columns */
+      @media (max-width: 900px) {
+        body {
+          padding: 20px;
+        }
+
+        .video-gallery {
+          padding: 15px;
+          gap: 15px;
+        }
+
+        .video-item {
+          flex-basis: calc(50% - 7.5px);
+          max-width: none;
+        }
+      }
+
+      /* Small Mobile Devices (Screen width up to 550px) - Single column */
+      @media (max-width: 550px) {
+        .video-item {
+          flex-basis: 100%;
+          max-width: none;
+        }
+
+        .play-icon {
+          font-size: 3em;
+        }
+
+        .video-item-title {
+          font-size: 1em;
+        }
+
+        /* Mobile Modal Adjustment */
+        .modal-content {
+          /* Ensures video takes up most of the screen width on phones */
+          width: 95vw;
+        }
+
+        .close {
+          /* Move close button slightly for mobile touch targets */
+          top: 5px;
+          right: 15px;
+          font-size: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>100 PLUS VIDEOS</h1>
+
+    <div class="video-gallery">
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1zhZqm7ZbG8GWfIdHlhxL8iAcDXU1vm18/preview"
+        data-direct-url="https://drive.google.com/file/d/1zhZqm7ZbG8GWfIdHlhxL8iAcDXU1vm18/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1zhZqm7ZbG8GWfIdHlhxL8iAcDXU1vm18&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/13sZ32pVt9rIXB6B8VPY_k0nzTDgo3fK8/preview"
+        data-direct-url="https://drive.google.com/file/d/13sZ32pVt9rIXB6B8VPY_k0nzTDgo3fK8/view"
+        data-image-url="https://drive.google.com/thumbnail?id=13sZ32pVt9rIXB6B8VPY_k0nzTDgo3fK8&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1m0I1JMvsSZFNcCHwwP02HWuq0tsnGUty/preview"
+        data-direct-url="https://drive.google.com/file/d/1m0I1JMvsSZFNcCHwwP02HWuq0tsnGUty/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1m0I1JMvsSZFNcCHwwP02HWuq0tsnGUty&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/13VP5k2Rd2eAYZnU-NVsi4t9vMNFLacm7/preview"
+        data-direct-url="https://drive.google.com/file/d/13VP5k2Rd2eAYZnU-NVsi4t9vMNFLacm7/view"
+        data-image-url="https://drive.google.com/thumbnail?id=13VP5k2Rd2eAYZnU-NVsi4t9vMNFLacm7&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1aiuBge65msW_5tCi9KFolUnuvv5XRDY6/preview"
+        data-direct-url="https://drive.google.com/file/d/1aiuBge65msW_5tCi9KFolUnuvv5XRDY6/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1aiuBge65msW_5tCi9KFolUnuvv5XRDY6&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1svVea16xG-TR07_dTkzRQGSzq6H1FZ_A/preview"
+        data-direct-url="https://drive.google.com/file/d/1svVea16xG-TR07_dTkzRQGSzq6H1FZ_A/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1svVea16xG-TR07_dTkzRQGSzq6H1FZ_A&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1Xos4hVAlivFpyGTmGvjLL-YNmyLntQqd/preview"
+        data-direct-url="https://drive.google.com/file/d/1Xos4hVAlivFpyGTmGvjLL-YNmyLntQqd/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1Xos4hVAlivFpyGTmGvjLL-YNmyLntQqd&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1_EkcoEhWXnhwe31trCByOyKBNtAeN3SI/preview"
+        data-direct-url="https://drive.google.com/file/d/1_EkcoEhWXnhwe31trCByOyKBNtAeN3SI/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1_EkcoEhWXnhwe31trCByOyKBNtAeN3SI&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1WX5YJNYGEtjps-OWRnDde-DrM7hCrSWn/preview"
+        data-direct-url="https://drive.google.com/file/d/1WX5YJNYGEtjps-OWRnDde-DrM7hCrSWn/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1WX5YJNYGEtjps-OWRnDde-DrM7hCrSWn&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/17EXXzPVqmpeEOUn1rGo8tVL5h44nFIk6/preview"
+        data-direct-url="https://drive.google.com/file/d/17EXXzPVqmpeEOUn1rGo8tVL5h44nFIk6/view"
+        data-image-url="https://drive.google.com/thumbnail?id=17EXXzPVqmpeEOUn1rGo8tVL5h44nFIk6&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1Uu_eeavadBBlrOsElNdE4H8XunDyHckZ/preview"
+        data-direct-url="https://drive.google.com/file/d/1Uu_eeavadBBlrOsElNdE4H8XunDyHckZ/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1Uu_eeavadBBlrOsElNdE4H8XunDyHckZ&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1_y0-P7RWs_bfivPFbB6o8GHQeLouNVrG/preview"
+        data-direct-url="https://drive.google.com/file/d/1_y0-P7RWs_bfivPFbB6o8GHQeLouNVrG/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1_y0-P7RWs_bfivPFbB6o8GHQeLouNVrG&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1EeV9kTObhYJ5XGzhIUc1AbviYK60H8U-/preview"
+        data-direct-url="https://drive.google.com/file/d/1EeV9kTObhYJ5XGzhIUc1AbviYK60H8U-/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1EeV9kTObhYJ5XGzhIUc1AbviYK60H8U-&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1AmLrvmYN1DoQpYbJ_hGEg7E7pfDYhwzq/preview"
+        data-direct-url="https://drive.google.com/file/d/1AmLrvmYN1DoQpYbJ_hGEg7E7pfDYhwzq/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1AmLrvmYN1DoQpYbJ_hGEg7E7pfDYhwzq&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/132UNTc2gWjkz6V4m1Sgo1wmnyCFRAcI1/preview"
+        data-direct-url="https://drive.google.com/file/d/132UNTc2gWjkz6V4m1Sgo1wmnyCFRAcI1/view"
+        data-image-url="https://drive.google.com/thumbnail?id=132UNTc2gWjkz6V4m1Sgo1wmnyCFRAcI1&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1oXUVEkDlacfeugzdFbO0E7d4EmBZaWY5/preview"
+        data-direct-url="https://drive.google.com/file/d/1oXUVEkDlacfeugzdFbO0E7d4EmBZaWY5/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1oXUVEkDlacfeugzdFbO0E7d4EmBZaWY5&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1s_wCpRGwfqKIfYmOmIU-wqcFRc9hO1rG/preview"
+        data-direct-url="https://drive.google.com/file/d/1s_wCpRGwfqKIfYmOmIU-wqcFRc9hO1rG/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1s_wCpRGwfqKIfYmOmIU-wqcFRc9hO1rG&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1yJJLJs_bsnz36Dovw6WSEIsAAeD75ZM3/preview"
+        data-direct-url="https://drive.google.com/file/d/1yJJLJs_bsnz36Dovw6WSEIsAAeD75ZM3/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1yJJLJs_bsnz36Dovw6WSEIsAAeD75ZM3&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1t03DRCqGtfOiymc8WpT3xkKZ3_jcixr-/preview"
+        data-direct-url="https://drive.google.com/file/d/1t03DRCqGtfOiymc8WpT3xkKZ3_jcixr-/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1t03DRCqGtfOiymc8WpT3xkKZ3_jcixr-&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+      <div
+        class="video-item"
+        data-embed-url="https://drive.google.com/file/d/1IIZ3YPlsPuINlUBZcZ764Bu5WAQVdpeo/preview"
+        data-direct-url="https://drive.google.com/file/d/1IIZ3YPlsPuINlUBZcZ764Bu5WAQVdpeo/view"
+        data-image-url="https://drive.google.com/thumbnail?id=1IIZ3YPlsPuINlUBZcZ764Bu5WAQVdpeo&sz=w500"
+        data-title="CLIP ALPHA"
+      >
+        <div class="video-thumbnail-wrapper">
+          <img src="" alt="Video Thumbnail" />
+          <span class="play-icon">&#9658;</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="myModal" class="modal">
+      <span class="close">&times;</span>
+      <div class="modal-content">
+        <div class="modal-video-wrapper"></div>
+      </div>
+    </div>
+
+    <script>
+      const videoItems = document.querySelectorAll(".video-item");
+      const modal = document.getElementById("myModal");
+      const closeBtn = document.querySelector(".close");
+      const modalVideoWrapper = document.querySelector(".modal-video-wrapper");
+
+      // Function to set image src and handle click
+      videoItems.forEach((item) => {
+        const imageElement = item.querySelector("img");
+        const imageUrl = item.getAttribute("data-image-url");
+
+        // Set the image source dynamically
+        if (imageElement && imageUrl) {
+          imageElement.src = imageUrl;
+        }
+
+        // Handle click to open the modal
+        item.addEventListener("click", function () {
+          const embedUrl = this.getAttribute("data-embed-url");
+          const directViewUrl = this.getAttribute("data-direct-url");
+
+          const iframeElement = document.createElement("iframe");
+
+          iframeElement.setAttribute("src", embedUrl);
+          iframeElement.setAttribute("allowfullscreen", "true");
+          iframeElement.setAttribute("frameborder", "0");
+          iframeElement.setAttribute("allow", "autoplay; encrypted-media");
+
+          // Fallback check for Google Drive security block
+          iframeElement.onload = function () {
+            try {
+              if (
+                iframeElement.contentDocument.body.innerHTML.includes("login")
+              ) {
+                console.warn("GDrive Embed failed. Opening direct view link.");
+                closeModal();
+                window.open(directViewUrl, "_blank");
+              }
+            } catch (e) {
+              // Catch the typical 'Blocked a frame' error
+            }
+          };
+
+          modalVideoWrapper.innerHTML = "";
+          modalVideoWrapper.appendChild(iframeElement);
+          modal.style.display = "block";
+        });
+      });
+
+      // Function to handle closing the modal
+      function closeModal() {
+        modal.style.display = "none";
+        modalVideoWrapper.innerHTML = "";
+      }
+
+      // Close logic remains the same
+      closeBtn.addEventListener("click", closeModal);
+      window.addEventListener("click", function (event) {
+        if (event.target == modal) {
+          closeModal();
+        }
+      });
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && modal.style.display === "block") {
+          closeModal();
+        }
+      });
+    </script>
+  </body>
+</html>
